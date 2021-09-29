@@ -1,0 +1,13 @@
+#schemas
+NoSQL_schema.js
+NoSQL-schema.jpeg
+RDBMS-schema.jpeg
+
+#CSV files containing initial data
+data/
+
+#Dependancy directory
+node_modules/
+
+#config file
+config.js
