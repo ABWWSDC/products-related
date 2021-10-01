@@ -4,12 +4,13 @@ const models = require('../../db/models');
 
 module.exports = {
   getProductById: (req, res) => {
-    const params = [req.params.id];
+    const { id } = req.params;
+    const params = [id];
 
     models.getProductById(params, (err, data) => {
       if (err) {
         console.error('couldn\'t get product info :(', err);
-        res.status(404).send('couldn\'t get product info', err);
+        res.status(400).send('couldn\'t get product info', err);
       } else {
         const { rows } = data;
         const productInfo = rows[0];
@@ -18,8 +19,29 @@ module.exports = {
       }
     });
   },
+  getProductStyles: (req, res) => {
+    const { id } = req.params;
+    const params = [id];
+
+    models.getProductStyles(params, (err, data) => {
+      if (err) {
+        console.error('couldn\'t get product styles', err);
+        res.status(400).send('couldn\'t get product styles', err);
+      } else {
+        const { rows } = data;
+        rows.forEach((style) => {
+          delete Object.assign(style, { style_id: style.id }).id;
+          delete Object.assign(style, { photos: style.array_agg }).array_agg;
+          delete Object.assign(style, { skus: style.json_object_agg }).json_object_agg;
+        });
+
+        res.status(200).send({ product_id: id, results: rows });
+      }
+    });
+  },
   getRelatedProducts: (req, res) => {
-    const params = [req.params.id];
+    const { id } = req.params;
+    const params = [id];
 
     models.getRelatedProducts(params, (err, data) => {
       if (err) {
@@ -27,8 +49,9 @@ module.exports = {
         res.status(400).send('couldn\'t get related product ids', err);
       } else {
         const { rows } = data;
+        const relatedProducts = rows.map((relatedProduct) => relatedProduct.related_product_id);
 
-        res.status(200).send(rows);
+        res.status(200).send(relatedProducts);
       }
     });
   },
