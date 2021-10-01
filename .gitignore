@@ -1,8 +1,3 @@
-#schemas
-NoSQL_schema.js
-NoSQL-schema.jpeg
-RDBMS-schema.jpeg
-
 #CSV files containing initial data
 data/
 
@@ -11,3 +6,6 @@ node_modules/
 
 #config file
 config.js
+
+#logs
+logs/
