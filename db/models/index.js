@@ -27,8 +27,11 @@ module.exports = {
   }, */
   getProductsList: ([page, count = '5'], callback) => {
     let queryBase = 'SELECT id, name, slogan, description, category, default_price FROM products ';
-    const pageStart = Number(page) * Number(count) - (Number(count) - 1);
-    const pageEnd = Number(page) * Number(count);
+    /* wondering about current implementation of this, because atm if eg page=2, count=3
+    it'd return products 4, 5, 6 as opposed to 6, 7, 8.
+    gonna ask around and see what other people think
+    */
+    const pageStart = (Number(page) - 1) * Number(count);
 
     if (!page && count === '5') {
       const queryProducts = queryBase + 'LIMIT $1';
@@ -47,17 +50,17 @@ module.exports = {
     }
 
     if (page && count === '5') {
-      const queryProductsWithPage = queryBase + 'WHERE id BETWEEN $1 AND $2';
+      const queryProductsWithPage = queryBase + 'LIMIT $1 OFFSET $2';
 
-      pool.query(queryProductsWithPage, [pageStart, pageEnd], (err, data) => {
+      pool.query(queryProductsWithPage, [count, pageStart], (err, data) => {
         callback(err, data);
       });
     }
 
     if (page && count !== '5') {
-      const queryProductsWithBoth = queryBase + 'WHERE id BETWEEN $1 AND $2 LIMIT $3';
+      const queryProductsWithBoth = queryBase + 'LIMIT $1 OFFSET $2';
 
-      pool.query(queryProductsWithBoth, [pageStart, pageEnd, count], (err, data) => {
+      pool.query(queryProductsWithBoth, [count, pageStart], (err, data) => {
         callback(err, data);
       });
     }
