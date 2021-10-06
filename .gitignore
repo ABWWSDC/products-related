@@ -19,7 +19,7 @@ jest.config.js
 webpack.config.js
 
 #ssh/pem
-postgres_db_2.pem
+*.pem
 
 #ec2 instructions
 ec2_db_setup.txt
