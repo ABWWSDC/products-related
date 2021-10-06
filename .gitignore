@@ -4,11 +4,28 @@ data/
 #Dependancy directory
 node_modules/
 
-#config file
+#configs
 config.js
 
 #logs
 logs/
 
-#tests
-tests/
+#front-end code
+__test__/
+stats.json
+client/
+babel.config.js
+jest.config.js
+webpack.config.js
+
+#ssh/pem
+postgres_db_2.pem
+
+#ec2 instructions
+ec2_db_setup.txt
+
+#routes controllers and models for other services
+qnaModels.js
+reviewsModels.js
+qnaControllers.js
+reviewsControllers.js
