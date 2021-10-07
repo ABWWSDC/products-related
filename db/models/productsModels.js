@@ -4,7 +4,7 @@ const pool = require('..');
 
 module.exports = {
   getProductsList: ([page = '1', count = '5'], callback) => {
-    const queryProducts = 'SELECT id, name, slogan, description, category, default_price FROM products ORDER BY id ASC '
+    const queryProductsList = 'SELECT id, name, slogan, description, category, default_price FROM products ORDER BY id ASC '
       + 'LIMIT $1 OFFSET $2';
     /* wondering about current implementation of this, because atm if eg page=2, count=3
     it'd return products 4, 5, 6 as opposed to 6, 7, 8.
@@ -12,7 +12,7 @@ module.exports = {
     */
     const pageStart = (page - 1) * count;
 
-    pool.query(queryProducts, [count, pageStart], (err, data) => {
+    pool.query(queryProductsList, [count, pageStart], (err, data) => {
       callback(err, data);
     });
   },
