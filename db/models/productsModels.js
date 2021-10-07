@@ -4,7 +4,7 @@ const pool = require('..');
 
 module.exports = {
   getProductsList: ([page, count = '5'], callback) => {
-    let queryBase = 'SELECT id, name, slogan, description, category, default_price FROM products ';
+    let queryBase = 'SELECT id, name, slogan, description, category, default_price FROM products ORDER BY id ASC ';
     /* wondering about current implementation of this, because atm if eg page=2, count=3
     it'd return products 4, 5, 6 as opposed to 6, 7, 8.
     gonna ask around and see what other people think
