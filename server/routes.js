@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const controllers = require('./controllers');
 
-const { productsControllers, qnaControllers, reviewsControllers } = controllers;
+const { productsControllers } = controllers;
 
 // products api
 router.get('/products', productsControllers.getProductsList);

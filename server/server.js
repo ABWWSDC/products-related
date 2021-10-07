@@ -25,4 +25,9 @@ server.use('/css', express.static(path.join(BOOTSTRAPCSS_DIR)));
 server.use('/js', express.static(path.join(BOOTSTRAPJS_DIR)));
 server.use('/favicon.ico', express.static(path.join(__dirname)));
 
+// loader.io stuff
+server.get('/loaderio-3528ffab75a664e446aabaea25412358', (req, res) => {
+  res.status(200).send('loaderio-3528ffab75a664e446aabaea25412358');
+});
+
 module.exports = server;

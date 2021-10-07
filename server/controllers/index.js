@@ -1,3 +1,3 @@
 exports.productsControllers = require('./productsControllers');
-exports.qnaControllers = require('./qnaControllers');
-exports.reviewsControllers = require('./reviewsControllers');
+// exports.qnaControllers = require('./qnaControllers');
+// exports.reviewsControllers = require('./reviewsControllers');
