@@ -4,8 +4,9 @@ Building a scalable backend/system design for project-catlwalk's products overvi
 # Tech Stack
 * [PostgreSQL](https://www.postgresql.org)
 * [node](https://nodejs.org/en/) / [express](https://expressjs.com/)
+* [AWS EC2](https://aws.amazon.com/ec2/)
 
-# Tests
+### Tests
 For local testing:
 * [k6](https://k6.io/)
 

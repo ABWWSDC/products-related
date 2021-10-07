@@ -3,45 +3,18 @@ const pool = require('..');
 // not final just fiddling around
 
 module.exports = {
-  getProductsList: ([page, count = '5'], callback) => {
-    const queryBase = 'SELECT id, name, slogan, description, category, default_price FROM products ORDER BY id ASC ';
+  getProductsList: ([page = '1', count = '5'], callback) => {
+    const queryProducts = 'SELECT id, name, slogan, description, category, default_price FROM products ORDER BY id ASC '
+      + 'LIMIT $1 OFFSET $2';
     /* wondering about current implementation of this, because atm if eg page=2, count=3
     it'd return products 4, 5, 6 as opposed to 6, 7, 8.
     gonna ask around and see what other people think
     */
-    // const pageStart = (Number(page) - 1) * Number(count);
+    const pageStart = (page - 1) * count;
 
-    if (!page && count === '5') {
-      const queryProducts = queryBase + 'LIMIT $1';
-
-      pool.query(queryProducts, [count], (err, data) => {
-        callback(err, data);
-      });
-    }
-
-    if (!page && count !== '5') {
-      const queryProductsWithCount = queryBase + 'LIMIT $1';
-
-      pool.query(queryProductsWithCount, [count], (err, data) => {
-        callback(err, data);
-      });
-    }
-
-    if (page && count === '5') {
-      const queryProductsWithPage = queryBase + 'LIMIT $1 OFFSET $2';
-
-      pool.query(queryProductsWithPage, [count, page], (err, data) => {
-        callback(err, data);
-      });
-    }
-
-    if (page && count !== '5') {
-      const queryProductsWithBoth = queryBase + 'LIMIT $1 OFFSET $2';
-
-      pool.query(queryProductsWithBoth, [count, page], (err, data) => {
-        callback(err, data);
-      });
-    }
+    pool.query(queryProducts, [count, pageStart], (err, data) => {
+      callback(err, data);
+    });
   },
   getProductById: (params, callback) => {
     const queryProductsById = 'SELECT pr.id, pr.name, pr.slogan, pr.description, pr.category, pr.default_price, '
