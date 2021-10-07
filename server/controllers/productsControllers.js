@@ -1,7 +1,5 @@
 const { productsModels } = require('../../db/models');
 
-// not final just fiddling around
-
 module.exports = {
   getProductsList: (req, res) => {
     const { page, count } = req.query;
@@ -38,7 +36,7 @@ module.exports = {
 
     productsModels.getProductStyles(params, (err, data) => {
       if (err) {
-        console.error('couldn\'t get product styles :(', err );
+        console.error('couldn\'t get product styles :(', err);
         res.status(400).send({ dev_message: 'couldn\'t get product styles :(', err });
       } else {
         const { rows } = data;

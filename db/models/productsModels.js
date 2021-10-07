@@ -4,12 +4,12 @@ const pool = require('..');
 
 module.exports = {
   getProductsList: ([page, count = '5'], callback) => {
-    let queryBase = 'SELECT id, name, slogan, description, category, default_price FROM products ORDER BY id ASC ';
+    const queryBase = 'SELECT id, name, slogan, description, category, default_price FROM products ORDER BY id ASC ';
     /* wondering about current implementation of this, because atm if eg page=2, count=3
     it'd return products 4, 5, 6 as opposed to 6, 7, 8.
     gonna ask around and see what other people think
     */
-    const pageStart = (Number(page) - 1) * Number(count);
+    // const pageStart = (Number(page) - 1) * Number(count);
 
     if (!page && count === '5') {
       const queryProducts = queryBase + 'LIMIT $1';
@@ -30,7 +30,7 @@ module.exports = {
     if (page && count === '5') {
       const queryProductsWithPage = queryBase + 'LIMIT $1 OFFSET $2';
 
-      pool.query(queryProductsWithPage, [count, pageStart], (err, data) => {
+      pool.query(queryProductsWithPage, [count, page], (err, data) => {
         callback(err, data);
       });
     }
@@ -38,7 +38,7 @@ module.exports = {
     if (page && count !== '5') {
       const queryProductsWithBoth = queryBase + 'LIMIT $1 OFFSET $2';
 
-      pool.query(queryProductsWithBoth, [count, pageStart], (err, data) => {
+      pool.query(queryProductsWithBoth, [count, page], (err, data) => {
         callback(err, data);
       });
     }
