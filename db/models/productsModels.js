@@ -11,7 +11,7 @@ module.exports = {
     it'd return products 4, 5, 6 as opposed to 6, 7, 8.
     gonna ask around and see what other people think
     */
-    const pageStart = (Number(page) - 1) * Number(count) + 1;
+    const pageStart = (Number(page) - 1) * Number(count);
     // const pageEnd = Number(page) * Number(count);
 
     await pool.query(queryProductsList, [count, pageStart], (err, data) => {
