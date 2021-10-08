@@ -3,31 +3,32 @@ const pool = require('..');
 // not final just fiddling around
 
 module.exports = {
-  getProductsList: ([page = '1', count = '5'], callback) => {
-    const queryProductsList = 'SELECT id, name, slogan, description, category, default_price FROM products ORDER BY id ASC '
-      + 'LIMIT $1 OFFSET $2';
+  getProductsList: async ([page = '1', count = '5'], callback) => {
+    const queryProductsList = 'SELECT id, name, slogan, description, category, default_price FROM products '
+      + 'WHERE id BETWEEN $1 AND $2';
     /* wondering about current implementation of this, because atm if eg page=2, count=3
     it'd return products 4, 5, 6 as opposed to 6, 7, 8.
     gonna ask around and see what other people think
     */
-    const pageStart = (page - 1) * count;
+    const pageStart = (Number(page) - 1) * Number(count) + 1;
+    const pageEnd = Number(page) * Number(count);
 
-    pool.query(queryProductsList, [count, pageStart], (err, data) => {
+    await pool.query(queryProductsList, [pageStart, pageEnd], (err, data) => {
       callback(err, data);
     });
   },
-  getProductById: (params, callback) => {
+  getProductById: async (params, callback) => {
     const queryProductsById = 'SELECT pr.id, pr.name, pr.slogan, pr.description, pr.category, pr.default_price, '
       // using jsonb instead of json because jsonb creates object as binary data, which is unique
       + 'ARRAY_AGG ( DISTINCT JSONB_BUILD_OBJECT(\'feature\', fe.feature, \'value\', fe.value) ) '
       + 'FROM products AS pr INNER JOIN features AS fe ON fe.product_id = pr.id '
       + 'WHERE pr.id = $1 GROUP BY pr.id';
 
-    pool.query(queryProductsById, params, (err, data) => {
+    await pool.query(queryProductsById, params, (err, data) => {
       callback(err, data);
     });
   },
-  getProductStyles: (params, callback) => {
+  getProductStyles: async (params, callback) => {
     const queryStyles = 'SELECT st.id, st.name, st.sale_price, st.original_price, st."default?", '
     // same here, more important because it was duplicating photos by number of skus
     + 'ARRAY_AGG ( DISTINCT JSONB_BUILD_OBJECT(\'thumbnail_url\', ph.thumbnail_url, \'url\', ph.url) ), '
@@ -37,14 +38,14 @@ module.exports = {
     + 'INNER JOIN skus ON skus.style_id = st.id '
     + 'WHERE st.product_id = $1 GROUP BY st.id';
 
-    pool.query(queryStyles, params, (err, data) => {
+    await pool.query(queryStyles, params, (err, data) => {
       callback(err, data);
     });
   },
-  getRelatedProducts: (params, callback) => {
+  getRelatedProducts: async (params, callback) => {
     const queryRelated = 'SELECT related_product_id FROM related WHERE current_product_id = $1';
 
-    pool.query(queryRelated, params, (err, data) => {
+    await pool.query(queryRelated, params, (err, data) => {
       callback(err, data);
     });
   },

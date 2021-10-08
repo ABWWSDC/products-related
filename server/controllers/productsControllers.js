@@ -1,11 +1,11 @@
 const { productsModels } = require('../../db/models');
 
 module.exports = {
-  getProductsList: (req, res) => {
+  getProductsList: async (req, res) => {
     const { page, count } = req.query;
     const params = [page, count];
 
-    productsModels.getProductsList(params, (err, data) => {
+    await productsModels.getProductsList(params, (err, data) => {
       if (err) {
         console.error('couldn\'t get products :(', err);
         res.status(400).send({ dev_message: 'couldn\'t get products :(', err });
@@ -15,11 +15,11 @@ module.exports = {
       }
     });
   },
-  getProductById: (req, res) => {
+  getProductById: async (req, res) => {
     const { id } = req.params;
     const params = [id];
 
-    productsModels.getProductById(params, (err, data) => {
+    await productsModels.getProductById(params, (err, data) => {
       if (err) {
         console.error('couldn\'t get product info :(', err);
         res.status(400).send({ dev_message: 'couldn\'t get product info :(', err });
@@ -30,11 +30,11 @@ module.exports = {
       }
     });
   },
-  getProductStyles: (req, res) => {
+  getProductStyles: async (req, res) => {
     const { id } = req.params;
     const params = [id];
 
-    productsModels.getProductStyles(params, (err, data) => {
+    await productsModels.getProductStyles(params, (err, data) => {
       if (err) {
         console.error('couldn\'t get product styles :(', err);
         res.status(400).send({ dev_message: 'couldn\'t get product styles :(', err });
@@ -50,11 +50,11 @@ module.exports = {
       }
     });
   },
-  getRelatedProducts: (req, res) => {
+  getRelatedProducts: async (req, res) => {
     const { id } = req.params;
     const params = [id];
 
-    productsModels.getRelatedProducts(params, (err, data) => {
+    await productsModels.getRelatedProducts(params, (err, data) => {
       if (err) {
         console.error('couldn\'t get related product ids :(', err);
         res.status(400).send({ dev_message: 'couldn\'t get related product ids :(', err });
