@@ -26,8 +26,8 @@ server.use('/js', express.static(path.join(BOOTSTRAPJS_DIR)));
 server.use('/favicon.ico', express.static(path.join(__dirname)));
 
 // loader.io stuff
-server.get('/loaderio-3528ffab75a664e446aabaea25412358', (req, res) => {
-  res.status(200).send('loaderio-3528ffab75a664e446aabaea25412358');
+server.get('/loaderio-9a8356b5595400930c5753ac3265e428', (req, res) => {
+  res.status(200).send('loaderio-9a8356b5595400930c5753ac3265e428');
 });
 
 module.exports = server;
