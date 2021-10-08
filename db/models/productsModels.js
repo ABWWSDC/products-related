@@ -5,17 +5,22 @@ const pool = require('..');
 module.exports = {
   getProductsList: async ([page = '1', count = '5'], callback) => {
     const queryProductsList = 'SELECT id, name, slogan, description, category, default_price FROM products '
-      + 'WHERE id BETWEEN $1 AND $2';
+      + 'ORDER BY id LIMIT $1 OFFSET $2';
+      // + 'WHERE id BETWEEN $1 AND $2';
     /* wondering about current implementation of this, because atm if eg page=2, count=3
     it'd return products 4, 5, 6 as opposed to 6, 7, 8.
     gonna ask around and see what other people think
     */
     const pageStart = (Number(page) - 1) * Number(count) + 1;
-    const pageEnd = Number(page) * Number(count);
+    // const pageEnd = Number(page) * Number(count);
 
-    await pool.query(queryProductsList, [pageStart, pageEnd], (err, data) => {
+    await pool.query(queryProductsList, [count, pageStart], (err, data) => {
       callback(err, data);
     });
+
+    // await pool.query(queryProductsList, [pageStart, pageEnd], (err, data) => {
+    //   callback(err, data);
+    // });
   },
   getProductById: async (params, callback) => {
     const queryProductsById = 'SELECT pr.id, pr.name, pr.slogan, pr.description, pr.category, pr.default_price, '
