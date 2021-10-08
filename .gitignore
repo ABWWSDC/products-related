@@ -19,10 +19,11 @@ jest.config.js
 webpack.config.js
 
 #ssh/pem
-*.pem
+ssh_pem/
 
 #ec2 instructions
 ec2_db_setup.txt
+ec2_server_setup.txt
 
 #routes controllers and models for other services
 qnaModels.js
