@@ -12,6 +12,7 @@ const pool = new Pool({
   port: PORT || 5432,
   database: DATABASE || 'sdc_products',
   password: null || 'AAB48e1a',
+  max: 20,
 });
 
 // make sure connection exists with postgresql db
